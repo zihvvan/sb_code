@@ -86,7 +86,7 @@ pipeline {
     }
     stage('k8s manifest file update') {
       steps {
-        git credentialsId: githubCredential,
+        git credentialsId: gitCredential,
             url: gitWebaddress,
             branch: 'main'
         

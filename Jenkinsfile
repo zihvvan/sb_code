@@ -10,7 +10,8 @@ pipeline {
     gitEmail = 'pcmin929@gmail.com'
     gitWebaddress = 'https://github.com/pcmin929/sb_code.git'
     gitSshaddress = 'git@github.com:pcmin929/sb_code.git'
-    gitCredential = 'git_cre' 
+    gitDepaddress = 'git@github.com:pcmin929/sb_code.git'
+    gitCredential = 'git_cre'
     // github credential 생성시의 ID
     dockerHubRegistry = 'oolralra/sbimage'
     dockerHubRegistryCredential = 'docker_cre' 
@@ -87,7 +88,7 @@ pipeline {
     stage('k8s manifest file update') {
       steps {
         git credentialsId: gitCredential,
-            url: gitWebaddress,
+            url: gitDepaddress,
             branch: 'main'
         
         // 이미지 태그 변경 후 메인 브랜치에 푸시

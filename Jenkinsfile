@@ -10,7 +10,7 @@ pipeline {
     gitEmail = 'pcmin929@gmail.com'
     gitWebaddress = 'https://github.com/pcmin929/sb_code.git'
     gitSshaddress = 'git@github.com:pcmin929/sb_code.git'
-    gitDepaddress = 'git@github.com:pcmin929/sb_code.git'
+    gitDepaddress = 'git@github.com:pcmin929/deployment.git'
     gitCredential = 'git_cre'
     // github credential 생성시의 ID
     dockerHubRegistry = 'oolralra/sbimage'
@@ -94,7 +94,7 @@ pipeline {
         // 이미지 태그 변경 후 메인 브랜치에 푸시
         sh "git config --global user.email ${gitEmail}"
         sh "git config --global user.name ${gitName}"
-        sh "sed -i 's@${dockerHubRegistry}:.*@${dockerHubRegistry}:${currentBuild.number}@g' deploy/sb-deploy.yml"
+        sh "sed -i 's@${dockerHubRegistry}:.*@${dockerHubRegistry}:${currentBuild.number}@g' sb-deploy.yml"
         sh "git add ."
         sh "git commit -m 'fix:${dockerHubRegistry} ${currentBuild.number} image versioning'"
         sh "git branch -M main"

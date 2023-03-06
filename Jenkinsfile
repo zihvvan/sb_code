@@ -22,6 +22,7 @@ pipeline {
     stage('Checkout Github') {
       steps {
         checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: GITCREDENTIAL, url: GITWEBADD]]])
+      }  
       post {
         failure {
           echo 'Repository clone failure'

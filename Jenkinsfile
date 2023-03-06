@@ -99,7 +99,7 @@ pipeline {
         sh "git commit -m 'fix:${dockerHubRegistry} ${currentBuild.number} image versioning'"
         sh "git branch -M main"
         sh "git remote remove origin"
-        sh "git remote add origin ${gitSshaddress}"
+        sh "git remote add origin ${gitDepaddress}"
         sh "git push -u origin main"
 
       }

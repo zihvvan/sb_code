@@ -6,23 +6,22 @@ pipeline {
   }
   
   environment {
-    gitName = 'pcmin929'
-    gitEmail = 'pcmin929@gmail.com'
-    gitWebaddress = 'https://github.com/pcmin929/sb_code.git'
-    gitSshaddress = 'git@github.com:pcmin929/sb_code.git'
-    gitDepaddress = 'git@github.com:pcmin929/deployment.git'
-    gitCredential = 'git_cre'
+    GITNAME = 'pcmin929'
+    GITEMAIL = 'pcmin929@gmail.com'
+    GITWEBADD = 'https://github.com/pcmin929/sb_code.git'
+    GITSSHADD = 'git@github.com:pcmin929/sb_code.git'
+    GITDEPADD = 'git@github.com:pcmin929/deployment.git'
+    GITCREDENTIAL = 'git_cre'
     // github credential 생성시의 ID
-    dockerHubRegistry = 'oolralra/sbimage'
-    dockerHubRegistryCredential = 'docker_cre' 
+    DOCKERHUB = 'oolralra/sbimage'
+    DOCKERHUBCREDENTIAL = 'docker_cre' 
     // docker credential 생성시의 ID
   }
 
   stages {
     stage('Checkout Github') {
       steps {
-        checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: gitCredential, url: gitWebaddress]]])
-      }
+        checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: GITCREDENTIAL, url: GITWEBADD]]]
       post {
         failure {
           echo 'Repository clone failure'
@@ -48,8 +47,8 @@ pipeline {
     }
     stage('Docker image Build') {
       steps {
-        sh "docker build -t ${dockerHubRegistry}:${currentBuild.number} ."
-        sh "docker build -t ${dockerHubRegistry}:latest ."
+        sh "docker build -t ${DOCKERHUB}:${currentBuild.number} ."
+        sh "docker build -t ${DOCKERHUB}:latest ."
         // oolralra/sbimage:4 이런식으로 빌드가 될것이다.
         // currentBuild.number 젠킨스에서 제공하는 빌드넘버변수.
       }
@@ -64,42 +63,42 @@ pipeline {
     }
     stage('docker image push') {
       steps {
-        withDockerRegistry(credentialsId: dockerHubRegistryCredential, url: '') {
+        withDockerRegistry(credentialsId: DOCKERHUBCREDENTIAL, url: '') {
           // withDockerRegistry : docker pipeline 플러그인 설치시 사용가능.
-          // dockerHubRegistryCredential : environment에서 선언한 docker_cre  
-            sh "docker push ${dockerHubRegistry}:${currentBuild.number}"
-            sh "docker push ${dockerHubRegistry}:latest"
+          // DOCKERHUBCREDENTIAL : environment에서 선언한 docker_cre  
+            sh "docker push ${DOCKERHUB}:${currentBuild.number}"
+            sh "docker push ${DOCKERHUB}:latest"
         }
 
       }
       post {
         failure {
           echo 'docker image push failure'
-          sh "docker image rm -f ${dockerHubRegistry}:${currentBuild.number}"
-          sh "docker image rm -f ${dockerHubRegistry}:latest"
+          sh "docker image rm -f ${DOCKERHUB}:${currentBuild.number}"
+          sh "docker image rm -f ${DOCKERHUB}:latest"
         }
         success {
-          sh "docker image rm -f ${dockerHubRegistry}:${currentBuild.number}"
-          sh "docker image rm -f ${dockerHubRegistry}:latest"  
+          sh "docker image rm -f ${DOCKERHUB}:${currentBuild.number}"
+          sh "docker image rm -f ${DOCKERHUB}:latest"  
           echo 'docker image push success'
         }
       }
     }
     stage('k8s manifest file update') {
       steps {
-        git credentialsId: gitCredential,
-            url: gitDepaddress,
+        git credentialsId: GITCREDENTIAL,
+            url: GITDEPADD,
             branch: 'main'
         
         // 이미지 태그 변경 후 메인 브랜치에 푸시
-        sh "git config --global user.email ${gitEmail}"
-        sh "git config --global user.name ${gitName}"
-        sh "sed -i 's@${dockerHubRegistry}:.*@${dockerHubRegistry}:${currentBuild.number}@g' deploy/deployment.yml"
+        sh "git config --global user.email ${GITEMAIL}"
+        sh "git config --global user.name ${GITNAME}"
+        sh "sed -i 's@${DOCKERHUB}:.*@${DOCKERHUB}:${currentBuild.number}@g' deploy/deployment.yml"
         sh "git add ."
-        sh "git commit -m 'fix:${dockerHubRegistry} ${currentBuild.number} image versioning'"
+        sh "git commit -m 'fix:${DOCKERHUB} ${currentBuild.number} image versioning'"
         sh "git branch -M main"
         sh "git remote remove origin"
-        sh "git remote add origin ${gitDepaddress}"
+        sh "git remote add origin ${GITDEPADD}"
         sh "git push -u origin main"
 
       }

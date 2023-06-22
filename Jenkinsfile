@@ -6,14 +6,14 @@ pipeline {
   }
   
   environment {
-    GITNAME = 'pcmin929'
-    GITEMAIL = 'pcmin929@gmail.com'
-    GITWEBADD = 'https://github.com/pcmin929/sb_code.git'
-    GITSSHADD = 'git@github.com:pcmin929/sb_code.git'
-    GITDEPADD = 'git@github.com:pcmin929/deployment.git'
+    GITNAME = 'zihvvan'
+    GITEMAIL = 'kimji217@naver.com'
+    GITWEBADD = 'https://github.com/zihvvan/sb_code.git'
+    GITSSHADD = 'git@github.com:zihvvan/sb_code.git'
+    GITDEPADD = 'git@github.com:zihvvan/deployment.git'
     GITCREDENTIAL = 'git_cre'
     // github credential 생성시의 ID
-    DOCKERHUB = 'oolralra/sbimage'
+    DOCKERHUB = '211.183.3.10:5000/myhttpd'
     DOCKERHUBCREDENTIAL = 'docker_cre' 
     // docker credential 생성시의 ID
   }

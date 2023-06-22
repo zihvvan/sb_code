@@ -64,13 +64,10 @@ pipeline {
       }
     }
     stage('docker image push') {
-      steps {
-        withDockerRegistry(credentialsId: DOCKERHUBCREDENTIAL, url: '') {
-          // withDockerRegistry : docker pipeline 플러그인 설치시 사용가능.
-          // DOCKERHUBCREDENTIAL : environment에서 선언한 docker_cre  
+      steps {  
             sh "docker push ${DOCKERHUB}:${currentBuild.number}"
             sh "docker push ${DOCKERHUB}:latest"
-        }
+       
 
       }
       post {

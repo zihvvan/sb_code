@@ -105,7 +105,7 @@ pipeline {
         failure {
           echo 'k8s manifest file update failure'
         }
-        success {
+        uccess {
           echo 'k8s manifest file update success'  
         }
       }

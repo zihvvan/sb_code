@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myhttpd-dep
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myhttpd
+  template:
+    metadata:
+      labels:
+        app: myhttpd
+    spec:
+      containers:
+      - name: myhttpd-pod
+        image: 211.183.3.10:5000/myhttpd:7
+        ports:
+        - containerPort: 8085
+

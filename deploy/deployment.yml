@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: myhttpd-pod
-        image: 211.183.3.10:5000/myhttpd:13
+        image: 211.183.3.10:5000/myhttpd:14
         ports:
         - containerPort: 8085
 
